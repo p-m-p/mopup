@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'rubygems'
+  gem 'mopup'
+rescue LoadError
+end
+
+require 'mopup'
+require 'optparse'
+
+options = {}
+path, verbose_proc = nil
+
+OptionParser.new do |opts|
+
+  opts.on('-t', '--translate [TAB_STOP]', 'Translate tabs to spaces') do |ts|
+    options[:translate_tabs_to_spaces] = true
+    options[:tab_stop] = tab_stop.to_i if ts
+  end
+
+  opts.on('-v', '--verbose', 'Log progress to terminal') do 
+    options[:verbose] = true
+  end
+
+  opts.on('-f', '--file FILE', 'File to parse') do |file|
+    path = file
+  end
+
+  opts.on('-d', '--directory DIR', 'Directory to parse') do |dir|
+    path = dir
+  end
+
+  opts.on('-r', '--recursive', 'Recurse through sub directories') do 
+    options[:recurse] = true
+  end
+
+  opts.on('-h', '--help', 'Show this message') do 
+    puts opts
+    exit(false)
+  end
+
+end.parse!
+
+mopup = Mopup.new(options)
+path = Dir.pwd unless path
+
+if options[:verbose]
+  verbose_proc = Proc.new { |file| puts file }
+end
+
+if File.directory? path
+  mopup.clean_dir(path, options[:recurse], &verbose_proc)
+elsif File.file? path
+  mopup.clean_file(path)
+end
+
