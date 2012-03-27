@@ -7,7 +7,7 @@ class Mopup
 
   attr_reader :options
 
-  def initialize( opts = nil )
+  def initialize(opts = nil)
     @options = {
       :translate_tabs_to_spaces => false,
       :tab_stop => 2
@@ -15,27 +15,28 @@ class Mopup
     @options.merge!(opts) if opts
   end
 
-  def clean( line )
+  def clean(line)
     if @options[:translate_tabs_to_spaces]
       line.gsub!(/\t/, ' ' * @options[:tab_stop]) 
     end
     line.rstrip!
+    line
   end
 
-  def clean_text( text, &block )
+  def clean_text(text)
     buffer = ''
-    text.lines do | line |
+    text.lines do |line|
       clean(line)
-      block.call(line) if block
+      yield(line) if block_given?
       buffer << line
     end
     buffer
   end
 
-  def clean_file( path )
+  def clean_file(path)
     tmp = Tempfile.new('whitespace-cleaner')
     begin
-      File.open(path) do | f |
+      File.open(path) do |f|
         while line = f.gets
           clean(line)
           tmp.puts line
@@ -48,8 +49,8 @@ class Mopup
     end
   end
 
-  def clean_dir( path, recurse = false, &block )
-    Dir.foreach(path) do | entry |
+  def clean_dir(path, recurse = false, &block)
+    Dir.foreach(path) do |entry|
       unless entry =~ /^\./
         full_path = path.chomp('/') + '/' + entry
         if File.file? full_path
@@ -63,4 +64,3 @@ class Mopup
   end
 
 end
-

@@ -35,6 +35,11 @@ OptionParser.new do |opts|
     options[:recurse] = true
   end
 
+  opts.on('--version', 'Show the current version of mopup') do 
+    puts Mopup::VERSION
+    exit(false)
+  end
+
   opts.on('-h', '--help', 'Show this message') do 
     puts opts
     exit(false)
@@ -46,7 +51,7 @@ mopup = Mopup.new(options)
 path = Dir.pwd unless path
 
 if options[:verbose]
-  verbose_proc = Proc.new { |file| puts file }
+  verbose_proc = Proc.new { |file| puts "Successfully cleaned: #{file}" }
 end
 
 if File.directory? path
