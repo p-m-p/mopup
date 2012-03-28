@@ -10,7 +10,7 @@ require 'mopup'
 require 'optparse'
 
 options = {}
-path, verbose_proc = nil
+path = verbose_proc = nil
 
 OptionParser.new do |opts|
 
