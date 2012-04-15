@@ -14,7 +14,7 @@ class MopupTest < Test::Unit::TestCase
 
   def test_clean_translate_tabs
     @mopup.options[:translate_tabs_to_spaces] = true
-    dirty = '		Hello mopup!'
+    dirty = '    Hello mopup!'
     clean = '    Hello mopup!'
     assert @mopup.clean(dirty) == clean
   end
@@ -22,9 +22,9 @@ class MopupTest < Test::Unit::TestCase
   def test_clean_text
     @mopup.options[:translate_tabs_to_spaces] = true
     dirty = %q{
-      		This is some text       
-      With somwe dirty lines  
-      	that need cleaning
+          This is some text
+      With somwe dirty lines
+        that need cleaning
     }
     @mopup.clean_text(dirty) do |line|
       assert_no_match /\t/, line

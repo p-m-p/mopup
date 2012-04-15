@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.description = 'White space and tab clean up and removal tool'
   s.version = Mopup::VERSION
   s.executables = 'mopup'
-  s.files = Dir.glob("{bin,lib}/*")
+  s.files = Dir.glob('{bin,lib}/*')
+  s.add_dependency('ptools')
 
 end

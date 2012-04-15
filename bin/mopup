@@ -16,10 +16,10 @@ OptionParser.new do |opts|
 
   opts.on('-t', '--translate [TAB_STOP]', 'Translate tabs to spaces') do |ts|
     options[:translate_tabs_to_spaces] = true
-    options[:tab_stop] = tab_stop.to_i if ts
+    options[:tab_stop] = ts.to_i if ts
   end
 
-  opts.on('-v', '--verbose', 'Log progress to terminal') do 
+  opts.on('-v', '--verbose', 'Log progress to terminal') do
     options[:verbose] = true
   end
 
@@ -31,16 +31,16 @@ OptionParser.new do |opts|
     path = dir
   end
 
-  opts.on('-r', '--recursive', 'Recurse through sub directories') do 
+  opts.on('-r', '--recursive', 'Recurse through sub directories') do
     options[:recurse] = true
   end
 
-  opts.on('--version', 'Show the current version of mopup') do 
+  opts.on('--version', 'Show the current version of mopup') do
     puts Mopup::VERSION
     exit(false)
   end
 
-  opts.on('-h', '--help', 'Show this message') do 
+  opts.on('-h', '--help', 'Show this message') do
     puts opts
     exit(false)
   end
@@ -51,7 +51,9 @@ mopup = Mopup.new(options)
 path = Dir.pwd unless path
 
 if options[:verbose]
-  verbose_proc = Proc.new { |file| puts "Successfully cleaned: #{file}" }
+  verbose_proc = Proc.new do |file, result|
+    puts "#{result}: #{file}"
+  end
 end
 
 if File.directory? path
