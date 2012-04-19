@@ -1,4 +1,4 @@
-Mopup - code clean up utility gem
+Mopup - code clean up utility
 ===
 
 Cleans up rogue whitespace in source code. Will also translate tabs to spaces
