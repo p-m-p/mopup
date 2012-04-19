@@ -1,3 +1,9 @@
+begin
+  require 'rubygems'
+  gem 'mopup'
+rescue LoadError
+end
+
 require 'test/unit'
 require 'mopup'
 
