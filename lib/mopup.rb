@@ -60,7 +60,8 @@ class Mopup
 
 # Cleans each line in file located at +path+
   def clean_file(path)
-    tmp = Tempfile.new('whitespace-cleaner')
+    tmp = Tempfile.new('mopup')
+    stat = File.stat(path)
     begin
       File.open(path) do |f|
         while line = f.gets
@@ -70,6 +71,8 @@ class Mopup
       end
       tmp.close
       FileUtils.mv(tmp.path, path)
+      File.chmod(stat.mode, path)
+      File.chown(stat.uid, stat.gid, path)
     ensure
       tmp.close!
     end
